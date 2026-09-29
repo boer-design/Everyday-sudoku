@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Sudoku: Play Uninterrupted · Navero App</title>
+    <meta
+      name="description"
+      content="A quiet moment with numbers. Four difficulty levels, flexible assistance and offline puzzles, with no banners or forced ad breaks. Coming soon to iPhone."
+    />
+    <meta property="og:title" content="Sudoku: Play Uninterrupted" />
+    <meta
+      property="og:description"
+      content="No forced ads. Just Sudoku. Coming soon to iPhone."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://boer-design.github.io/Everyday-sudoku/app/assets/icon.png"
+    />
+    <link rel="icon" href="assets/icon.png" type="image/png" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --paper: #faf9f5;
+        --ink: #23282e;
+        --muted: #58615a;
+        --line: #d9ddd3;
+        --accent: #405e4a;
+        --surface: #f0f1eb;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font:
+          1rem/1.65 system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
+      }
+      header,
+      main,
+      footer {
+        width: min(100% - 3rem, 72rem);
+        margin-inline: auto;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-block: 1.5rem;
+        border-bottom: 1px solid var(--line);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 600;
+      }
+      .brand img {
+        border-radius: 12px;
+      }
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.25rem;
+      }
+      a {
+        color: var(--accent);
+        text-underline-offset: 0.2em;
+        text-decoration-thickness: 0.08em;
+        overflow-wrap: anywhere;
+      }
+      a:hover {
+        text-decoration-thickness: 0.15em;
+      }
+      a:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 5px;
+      }
+      .skip {
+        position: absolute;
+        top: -10rem;
+        left: 1rem;
+        background: var(--paper);
+        padding: 1rem;
+      }
+      .skip:focus {
+        top: 1rem;
+        z-index: 2;
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-weight: 400;
+        line-height: 1.08;
+        text-wrap: balance;
+      }
+      h1 {
+        font-size: clamp(3rem, 5vw, 4rem);
+        margin: 1rem 0 1.5rem;
+      }
+      h2 {
+        font-size: clamp(2.1rem, 4vw, 3.2rem);
+        margin: 0 0 1.25rem;
+      }
+      h3 {
+        font-size: 1.75rem;
+        margin: 0 0 0.75rem;
+      }
+      p {
+        margin: 0.75rem 0;
+      }
+      .eyebrow {
+        color: var(--muted);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.13em;
+      }
+      .hero {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        align-items: center;
+        gap: 3rem;
+        padding: 2.5rem 0;
+      }
+      .lead {
+        font-size: 1.2rem;
+        color: var(--muted);
+        max-width: 34rem;
+      }
+      .status {
+        display: inline-block;
+        margin-top: 1.5rem;
+        padding: 0.65rem 1rem;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 2rem;
+        font-weight: 600;
+      }
+      .small {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .hero figure {
+        margin: 0;
+        max-width: 18rem;
+        justify-self: center;
+      }
+      figure img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 1.5rem;
+      }
+      figcaption {
+        margin-top: 0.6rem;
+        font-size: 0.8rem;
+        color: var(--muted);
+        text-align: center;
+      }
+      .features {
+        padding: 3rem 0 4rem;
+        border-top: 1px solid var(--line);
+      }
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        margin-top: 2.5rem;
+      }
+      .feature-grid p {
+        color: var(--muted);
+      }
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 2rem;
+        max-width: 48rem;
+        margin: 3rem auto 0;
+      }
+      .gallery figure {
+        margin: 0;
+      }
+      .hints {
+        padding: 2.5rem;
+        border: 1px solid var(--line);
+        border-radius: 1.5rem;
+        background: var(--surface);
+        max-width: 55rem;
+        margin: 0 auto 4rem;
+      }
+      .hints p {
+        max-width: 46rem;
+      }
+      .download {
+        text-align: center;
+        border-top: 1px solid var(--line);
+        padding: 2.5rem 0;
+      }
+      .download p {
+        max-width: 42rem;
+        margin: 0.75rem auto;
+      }
+      footer {
+        padding: 1.5rem 0 2.5rem;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --paper: #23282e;
+          --ink: #faf9f5;
+          --muted: #c2cbc3;
+          --line: #505b53;
+          --accent: #c2ddc7;
+          --surface: #2e353a;
+        }
+      }
+      @media (max-width: 760px) {
+        .hero {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+          padding: 2.5rem 0;
+        }
+        .hero figure {
+          max-width: 18rem;
+        }
+        .feature-grid {
+          grid-template-columns: 1fr;
+          gap: 1.75rem;
+        }
+        .gallery {
+          gap: 1rem;
+        }
+        .hints {
+          padding: 1.5rem;
+        }
+      }
+      @media (max-width: 420px) {
+        header,
+        main,
+        footer {
+          width: calc(100% - 2rem);
+        }
+        header {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .gallery {
+          grid-template-columns: 1fr;
+          max-width: 18rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header>
+      <div class="brand">
+        <img src="assets/icon.png" width="40" height="40" alt="" />Everyday
+        Sudoku
+      </div>
+      <nav aria-label="Main navigation">
+        <a href="#play">Explore</a><a href="#download">Availability</a
+        ><a href="../support/">Support</a>
+      </nav>
+    </header>
+    <main id="main">
+      <section class="hero" aria-labelledby="headline">
+        <div>
+          <p class="eyebrow">Sudoku: Play Uninterrupted · by Navero App</p>
+          <h1 id="headline">A quiet moment<br />with numbers.</h1>
+          <p class="lead">
+            Settle into the grid. Choose your pace, make a little progress, and
+            keep your focus—with no banners or forced ad breaks.
+          </p>
+          <p class="status">Coming soon to iPhone</p>
+          <p class="small">
+            Free to play. Optional rewarded hints and a one-time Unlimited Hints
+            purchase.
+          </p>
+        </div>
+        <figure>
+          <img
+            src="assets/01-no-forced-ads.jpg"
+            width="1290"
+            height="2796"
+            alt="Everyday Sudoku puzzle screen in a front-facing iPhone, with the message No forced ads. Just Sudoku."
+            fetchpriority="high"
+          />
+          <figcaption>Preview of the upcoming iPhone app.</figcaption>
+        </figure>
+      </section>
+      <section id="play" class="features" aria-labelledby="play-title">
+        <p class="eyebrow">Room to think</p>
+        <h2>One grid. Your way to play.</h2>
+        <div class="feature-grid">
+          <article>
+            <h3>Find your level.</h3>
+            <p>
+              Choose Easy, Medium, Hard or Expert. A quick puzzle or a longer
+              challenge, whenever you have a moment.
+            </p>
+          </article>
+          <article>
+            <h3>Choose your assistance.</h3>
+            <p>
+              Use Relaxed, Classic, Challenge or Custom settings. Pencil notes,
+              undo and explainable hints help you find your way.
+            </p>
+          </article>
+          <article>
+            <h3>Keep your place.</h3>
+            <p>
+              Resume your puzzle, revisit recent results and see how each solve
+              earned its XP. Your puzzle history stays on your device.
+            </p>
+          </article>
+        </div>
+        <div class="gallery">
+          <figure>
+            <img
+              src="assets/02-four-levels.jpg"
+              width="1290"
+              height="2796"
+              loading="lazy"
+              alt="Home screen showing four difficulty levels: Easy, Medium, Hard and Expert."
+            />
+          </figure>
+          <figure>
+            <img
+              src="assets/03-assistance.jpg"
+              width="1290"
+              height="2796"
+              loading="lazy"
+              alt="Assistance settings with Relaxed, Classic, Challenge and Custom choices."
+            />
+          </figure>
+        </div>
+      </section>
+      <section class="hints" aria-labelledby="hints-title">
+        <h2 id="hints-title">A little help, when you choose.</h2>
+        <p>
+          Every puzzle can be played offline. Three free hints return each day.
+          If you run out, you can choose to watch an ad to refill three hints,
+          or buy Unlimited Hints once.
+        </p>
+        <p>
+          Ordinary play has no forced ads. Ads, purchases and restoring
+          purchases need an internet connection. No subscription or player
+          account is required.
+        </p>
+      </section>
+      <section id="download" class="download" aria-labelledby="download-title">
+        <p class="eyebrow">For iPhone</p>
+        <h2 id="download-title">Your next quiet moment is coming.</h2>
+        <p>
+          Everyday Sudoku will launch on the App Store as
+          <strong>Sudoku: Play Uninterrupted</strong>. The download link will
+          appear here when it is available.
+        </p>
+        <p><a href="../support/">Questions? Get in touch.</a></p>
+      </section>
+    </main>
+    <footer>
+      <span>Everyday Sudoku · Navero App</span>
+      <nav aria-label="Footer">
+        <a href="../support/">Support</a><a href="../">Privacy policy</a>
+      </nav>
+    </footer>
+  </body>
+</html>
